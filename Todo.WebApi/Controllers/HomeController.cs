@@ -32,6 +32,8 @@ namespace Todo.WebApi.Controllers
 
             if (db.SaveChanges() > 0)
             {
+                SetCache(null);
+
                 return true;
             }
             else
@@ -39,5 +41,31 @@ namespace Todo.WebApi.Controllers
                 return false;
             }
         }
+
+        public string SetCache(FormDataCollection form)
+        {
+            WebClient wc = new WebClient();
+
+            if (form == null)
+            {
+                return wc.DownloadString(
+                    "http://localhost:57429/MemCache/Set?key=last_update&value=" + DateTime.Now.ToString());
+            }
+            else
+            {
+                return wc.DownloadString(
+                    "http://localhost:57429/MemCache/Set?key=" + 
+                        form["key"] + "&value=" + form["value"]);
+            }
+        }
+
+        public string GetCache([FromUri]string key)
+        {
+            WebClient wc = new WebClient();
+
+            return wc.DownloadString(
+                "http://localhost:57429/MemCache/Get?key=" + key);
+        }
+
     }
 }

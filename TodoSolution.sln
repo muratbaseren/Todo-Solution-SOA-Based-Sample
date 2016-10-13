@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Todo.Entities", "Todo.Entit
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Todo.DataAccessLayer", "Todo.DataAccessLayer\Todo.DataAccessLayer.csproj", "{F075B7DC-1234-4ACC-8CF3-F666CC7D8AAC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Todo.WebMvcCache", "Todo.WebMvcCache\Todo.WebMvcCache.csproj", "{5618F2BE-D19F-4ABB-9F1D-E961CDBE03CC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{F075B7DC-1234-4ACC-8CF3-F666CC7D8AAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F075B7DC-1234-4ACC-8CF3-F666CC7D8AAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F075B7DC-1234-4ACC-8CF3-F666CC7D8AAC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5618F2BE-D19F-4ABB-9F1D-E961CDBE03CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5618F2BE-D19F-4ABB-9F1D-E961CDBE03CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5618F2BE-D19F-4ABB-9F1D-E961CDBE03CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5618F2BE-D19F-4ABB-9F1D-E961CDBE03CC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -28,13 +28,18 @@ namespace Todo.Winforms
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            WebClient wc = new WebClient() { Encoding = System.Text.Encoding.UTF8 };
-            string result = wc.DownloadString("http://localhost:51844/api/Home/GetCache?key=last_update");
-
-            last_update = DateTime.Parse(result.Replace("\"", "").Replace(@"\", ""));
+            last_update = GetLastUpdateDateTime();
             LoadData();
 
             timer1.Start();
+        }
+
+        private DateTime GetLastUpdateDateTime()
+        {
+            WebClient wc = new WebClient() { Encoding = System.Text.Encoding.UTF8 };
+            string result = wc.DownloadString("http://localhost:51844/api/Home/GetCache?key=last_update").Trim('\"');
+
+            return DateTime.Parse(result);
         }
 
         private void LoadData()
@@ -51,6 +56,7 @@ namespace Todo.Winforms
         private void button1_Click(object sender, EventArgs e)
         {
             LoadData();
+            timer1.Start();
         }
 
         private void btnAddTodoItem_Click(object sender, EventArgs e)
@@ -67,15 +73,7 @@ namespace Todo.Winforms
 
             if (result)
             {
-                last_update = DateTime.Now;
-
-                wc = new WebClient();
-
-                values = new NameValueCollection();
-                values.Add("key", "last_update");
-                values.Add("value", last_update.ToString());
-
-                wc.UploadValues("http://localhost:51844/api/Home/SetCache", values);
+                last_update = GetLastUpdateDateTime();
 
                 // Verileri tekrar yükle..
                 LoadData();
@@ -84,10 +82,7 @@ namespace Todo.Winforms
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            WebClient wc = new WebClient() { Encoding = System.Text.Encoding.UTF8 };
-            string result = wc.DownloadString("http://localhost:51844/api/Home/GetCache?key=last_update");
-
-            DateTime api_last_update = DateTime.Parse(result.Replace("\"", "").Replace(@"\", ""));
+            DateTime api_last_update = GetLastUpdateDateTime();
 
             if (api_last_update != last_update)
             {

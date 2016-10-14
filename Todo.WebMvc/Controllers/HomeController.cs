@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using Todo.Entities;
+using Todo.WebMvc.Models;
 
 namespace Todo.WebMvc.Controllers
 {
@@ -20,6 +21,8 @@ namespace Todo.WebMvc.Controllers
             string jsonData = wc.DownloadString("http://localhost:51844/api/Home/GetTodoItemList");
 
             List<TodoItem> items = JsonConvert.DeserializeObject<List<TodoItem>>(jsonData);
+
+            UpdateLastUpdateCacheValue();
 
             return View(items);
         }
@@ -45,23 +48,7 @@ namespace Todo.WebMvc.Controllers
 
             if (result)
             {
-                // Insert 'ü ben yaptım.
-                // =======================================================================
-                DateTime date = DateTime.Now;
-
-                wc = new WebClient();
-
-                values = new NameValueCollection();
-                values.Add("key", "last_update");
-                values.Add("value", date.ToString());
-
-                wc.UploadValues("http://localhost:51844/api/Home/SetCache", values);
-
-                wc = new WebClient();
-                string result2 = wc.DownloadString("http://localhost:51844/api/Home/GetCache?key=last_update");
-
-                HttpContext.Cache["last_update"] = DateTime.Parse(result2.Replace("\"", "").Replace(@"\", ""));
-                // =======================================================================
+                UpdateLastUpdateCacheValue();
 
                 return RedirectToAction("Index");
             }
@@ -73,16 +60,17 @@ namespace Todo.WebMvc.Controllers
 
         }
 
+        private void UpdateLastUpdateCacheValue()
+        {
+            HttpContext.Cache["last_update"] = CacheHelper.GetLastUpdateDateTime();
+        }
 
         public JsonResult IsUpdated()
         {
-            WebClient wc = new WebClient() { Encoding = System.Text.Encoding.UTF8 };
-            string result = wc.DownloadString("http://localhost:51844/api/Home/GetCache?key=last_update");
-
             if (HttpContext.Cache["last_update"] != null)
             {
                 DateTime mvc_last_update = (DateTime)HttpContext.Cache["last_update"];
-                DateTime api_last_update = DateTime.Parse(result.Replace("\"", "").Replace(@"\", ""));
+                DateTime api_last_update = CacheHelper.GetLastUpdateDateTime();
 
                 if (mvc_last_update != api_last_update)
                 {

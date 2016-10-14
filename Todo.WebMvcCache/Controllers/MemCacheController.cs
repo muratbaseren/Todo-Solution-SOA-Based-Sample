@@ -9,7 +9,7 @@ namespace Todo.WebMvcCache.Controllers
     public class MemCacheController : Controller
     {
         // ..../MemCache/Get?key=last_update
-        public JsonResult Get(string key)
+        public string Get(string key)
         {
             string result = string.Empty;
 
@@ -18,15 +18,15 @@ namespace Todo.WebMvcCache.Controllers
                 result = HttpContext.Cache[key].ToString();
             }
 
-            return Json(result, JsonRequestBehavior.AllowGet);
+            return result;
         }
 
         // ..../MemCache/Get?key=last_update&value=abc
-        public JsonResult Set(string key, string value)
+        public string Set(string key, string value)
         {
             HttpContext.Cache[key] = value;
 
-            return Json("ok", JsonRequestBehavior.AllowGet);
+            return "ok";
         }
     }
 }

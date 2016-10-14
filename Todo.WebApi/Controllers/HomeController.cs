@@ -32,7 +32,7 @@ namespace Todo.WebApi.Controllers
 
             if (db.SaveChanges() > 0)
             {
-                SetCache(null);
+                SetCache("last_update", DateTime.Now.ToString());
 
                 return true;
             }
@@ -42,21 +42,12 @@ namespace Todo.WebApi.Controllers
             }
         }
 
-        public string SetCache(FormDataCollection form)
+        public string SetCache([FromUri] string key, [FromUri] string value)
         {
             WebClient wc = new WebClient();
 
-            if (form == null)
-            {
-                return wc.DownloadString(
-                    "http://localhost:57429/MemCache/Set?key=last_update&value=" + DateTime.Now.ToString());
-            }
-            else
-            {
-                return wc.DownloadString(
-                    "http://localhost:57429/MemCache/Set?key=" + 
-                        form["key"] + "&value=" + form["value"]);
-            }
+            return wc.DownloadString(
+                    "http://localhost:57429/MemCache/Set?key=" + key + "&value=" + value);
         }
 
         public string GetCache([FromUri]string key)

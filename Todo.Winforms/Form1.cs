@@ -30,8 +30,6 @@ namespace Todo.Winforms
         {
             last_update = GetLastUpdateDateTime();
             LoadData();
-
-            timer1.Start();
         }
 
         private DateTime GetLastUpdateDateTime()
@@ -51,12 +49,14 @@ namespace Todo.Winforms
 
             listBox1.DataSource = items;
             listBox1.DisplayMember = "Subject";
+
+            if (!timer1.Enabled)
+                timer1.Start();
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
             LoadData();
-            timer1.Start();
         }
 
         private void btnAddTodoItem_Click(object sender, EventArgs e)
@@ -86,8 +86,14 @@ namespace Todo.Winforms
 
             if (api_last_update != last_update)
             {
-                timer1.Enabled = false;
-                MessageBox.Show("Güncellemeler var.");
+                timer1.Stop();
+
+                DialogResult res = MessageBox.Show("Veriler yeniden yüklensin mi?", "Güncelleme Var!", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1);
+
+                if (res == DialogResult.Yes)
+                {
+                    LoadData();
+                }
             }
         }
     }

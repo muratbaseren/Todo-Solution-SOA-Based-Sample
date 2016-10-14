@@ -42,7 +42,7 @@ namespace Todo.WebApi.Controllers
             }
         }
 
-        public string SetCache([FromUri] string key, [FromUri] string value)
+        private string SetCache(string key, string value)
         {
             WebClient wc = new WebClient();
 
